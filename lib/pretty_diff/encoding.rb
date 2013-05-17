@@ -10,9 +10,18 @@ module PrettyDiff
         result = convert(result, detected, encoding)
       end
       if RUBY_VERSION >= "2.0.0"
-        result.force_encoding(encoding)
+        encoded = result.force_encoding(encoding)
+        drop_not_encodable_chars(encoding, encoded)
       else
         result
+      end
+    end
+
+    def drop_not_encodable_chars(encoding, text)
+      if text.encoding == encoding
+        text.encode(encoding, encoding, :invalid => :replace)
+      else
+        raise("String is not #{encoding}, but #{text.encoding}")
       end
     end
 
