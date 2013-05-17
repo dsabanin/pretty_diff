@@ -18,7 +18,7 @@ module PrettyDiff
     end
 
     def drop_not_encodable_chars(encoding, text)
-      if text.encoding == encoding.upcase
+      if text.encoding.to_s == encoding.to_s.upcase
         text.encode(encoding, encoding, :invalid => :replace)
       else
         raise("String is not #{encoding}, but #{text.encoding}")
